@@ -1,7 +1,7 @@
 use std::env;
+use std::error::Error;
 use std::fs;
 use std::process;
-
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -20,11 +20,19 @@ fn main() {
     println!("{:?}", args);
     println!("Searching for {}", { query });
     println!("In file  {}", { filename });
-    let contents = fs::read_to_string(filename).expect("Something went wrong, file expected");
 
-    println!("Searching for {}", contents);
+    if let Err(e) = run(config) {
+        println!("Application error {}", e);
+        process::exit(1)
+    }
 }
 
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.filename)?;
+
+    println!("Searching for {}", contents);
+    Ok(())
+}
 struct Config {
     pub query: String,
     pub filename: String,
