@@ -1,7 +1,6 @@
 use std::env;
 use std::process;
 
-use mini_grepp::run;
 use mini_grepp::Config;
 
 fn main() {
@@ -23,7 +22,7 @@ fn main() {
     println!("Searching for {}", { query });
     println!("In file  {}", { filename });
 
-    if let Err(e) = run(config) {
+    if let Err(e) = mini_grepp::run(config) {
         println!("Application error {}", e);
         process::exit(1)
     }
